@@ -1,3 +1,4 @@
+//using Recursion
 class Solution {
 public:
     int recCoins(vector<int>& coins, int amount){
@@ -14,6 +15,33 @@ public:
     }
     int coinChange(vector<int>& coins, int amount) {
         int minimum = recCoins(coins, amount);
+        if(minimum!=INT_MAX) return minimum;
+        return -1;
+    }
+};
+
+//Using Memoization
+
+class Solution {
+public:
+    int recCoins(vector<int>& coins,vector<int>& dp, int amount){
+        if(amount == 0) return 0;
+        if(amount < 0) return INT_MAX;
+        int minimum = INT_MAX;
+        if(dp[amount]!=-1) return dp[amount];
+        for(int i=0;i<coins.size();i++){
+            int ans = recCoins(coins,dp, amount-coins[i]);
+            if(ans!=INT_MAX){
+                minimum = min(1+ans, minimum);
+            }
+            dp[amount] = minimum;
+        }
+        return minimum;
+    }
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        vector<int>dp(amount+1, -1);
+        int minimum = recCoins(coins, dp, amount);
         if(minimum!=INT_MAX) return minimum;
         return -1;
     }
