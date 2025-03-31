@@ -29,3 +29,21 @@ int maximumNonAdjacentSum(vector<int> &nums){
     vector<int>dp(n+1, -1);
     return solve(nums,dp,n-1);
 }
+
+//Using Tabular
+
+int solveUsingTab(vector<int>& nums){
+    int n = nums.size();
+    vector<int>dp(n,-1);
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+    for(int i=2;i<n;i++){
+        int incl = dp[i-2] + nums[i];
+        int excl = dp[i-1];
+        dp[i] = max(incl, excl);
+    }
+    return dp[n-1];
+}
+int maximumNonAdjacentSum(vector<int> &nums){
+    return solveUsingTab(nums);
+}
